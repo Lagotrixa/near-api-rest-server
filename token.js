@@ -9,12 +9,12 @@ module.exports = {
     /**
      * @return {string}
      */
-    ViewNFT: async function (tokenId, contract) {
+    ViewMT: async function (tokenId, contract) {
         try {
-            const nftContract = contract ? contract : settings.nft_contract;
+            const mtContract = contract ? contract : settings.mt_contract;
             return await blockchain.View(
-                nftContract,
-                "nft_token",
+                mtContract,
+                "mt_tokens",
                 {token_id: tokenId}
             );
         } catch (e) {
@@ -25,8 +25,8 @@ module.exports = {
     /**
      * @return {string}
      */
-    MintNFT: async function (tokenId, metadata, contractAccountId, account_id, private_key) {
-        const nftContract = contractAccountId ? contractAccountId : settings.nft_contract;
+    MintMT: async function (tokenId, metadata, contractAccountId, account_id, private_key) {
+        const mtContract = contractAccountId ? contractAccountId : settings.mt_contract;
 
         let account = !(account_id && private_key)
             ? await blockchain.GetMasterAccount()
@@ -34,8 +34,9 @@ module.exports = {
 
         try {
             const tx = await account.functionCall(
-                nftContract,
-                "nft_mint",
+                mtContract,
+                "mt_mint",
+                //TODO fix params
                 {
                     "token_id": tokenId,
                     "metadata": metadata
@@ -50,9 +51,9 @@ module.exports = {
         }
     },
 
-    TransferNFT: async function (tokenId, receiverId, enforceOwnerId, memo, contractAccountId, owner_private_key) {
+    TransferMT: async function (tokenId, receiverId, enforceOwnerId, memo, contractAccountId, owner_private_key) {
         try {
-            const nftContract = contractAccountId ? contractAccountId : settings.nft_contract;
+            const mtContract = contractAccountId ? contractAccountId : settings.mt_contract;
             let account;
 
             account = !(enforceOwnerId && owner_private_key)
@@ -62,8 +63,9 @@ module.exports = {
                 : await blockchain.GetAccountByKey(enforceOwnerId, owner_private_key);
 
             return await account.functionCall(
-                nftContract,
-                "nft_transfer",
+                mtContract,
+                "mt_transfer",
+                //TODO fix params
                 {
                     "token_id": tokenId,
                     "receiver_id": receiverId,

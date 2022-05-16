@@ -67,7 +67,7 @@ const init = async () => {
             return api.notify(
                 'Welcome to NEAR REST API SERVER (https://github.com/near-examples/near-api-rest-server)! ' +
                 (!settings.master_account_id
-                    ? 'Please initialize your NEAR account in order to use simple nft mint/transfer methods'
+                    ? 'Please initialize your NEAR account in order to use simple mt mint/transfer methods'
                     : `Master Account: ${settings.master_account_id}`)
             );
         },
@@ -150,7 +150,7 @@ const init = async () => {
                 master_account_id,
                 seed_phrase,
                 private_key,
-                nft_contract,
+                mt_contract,
                 server_host,
                 server_port,
                 rpc_node,
@@ -162,7 +162,7 @@ const init = async () => {
             let response = await blockchain.Init(
                 master_account_id,
                 private_key,
-                nft_contract,
+                mt_contract,
                 server_host,
                 server_port,
                 rpc_node
@@ -196,23 +196,23 @@ const init = async () => {
 
     server.route({
         method: 'GET',
-        path: '/view_nft/{token_id}',
+        path: '/view_mt/{token_id}',
         handler: async (request, h) => {
-            request.params.request_name = "view_nft";
-            return replyCachedValue(h, await server.methods.viewNFT(request.params));
+            request.params.request_name = "view_mt";
+            return replyCachedValue(h, await server.methods.viewMT(request.params));
         },
     });
 
     server.method(
-        'viewNFT',
-        async (params) => await token.ViewNFT(params.token_id),
+        'viewMT',
+        async (params) => await token.ViewMT(params.token_id),
         getServerMethodParams());
 
     server.route({
         method: 'POST',
-        path: '/view_nft',
+        path: '/view_mt',
         handler: async (request) => {
-            return await token.ViewNFT(
+            return await token.ViewMT(
                 request.payload.token_id,
                 request.payload.contract
             );
@@ -270,7 +270,7 @@ const init = async () => {
 
     server.route({
         method: 'POST',
-        path: '/mint_nft',
+        path: '/mint_mt',
         handler: async (request) => {
             let {min, max} = request.payload;
 
@@ -283,7 +283,7 @@ const init = async () => {
 
                 let {account_id, private_key, metadata, contract} = request.payload;
 
-                const tx = await token.MintNFT(
+                const tx = await token.MintMT(
                     tokenId,
                     metadata,
                     contract,
@@ -293,7 +293,7 @@ const init = async () => {
 
                 if (tx) {
                     if (min === max) {
-                        let create_token = await token.ViewNFT(tokenId, contract);
+                        let create_token = await token.ViewMT(tokenId, contract);
                         create_token.token_id = tokenId;
                         response.push({token: create_token, tx: tx});
                     } else {
@@ -310,7 +310,7 @@ const init = async () => {
 
     server.route({
         method: 'POST',
-        path: '/transfer_nft',
+        path: '/transfer_mt',
         handler: async (request) => {
             request = processRequest(request);
 
@@ -323,7 +323,7 @@ const init = async () => {
                 owner_private_key,
             } = request.payload;
 
-            const txStatus = await token.TransferNFT(
+            const txStatus = await token.TransferMT(
                 token_id,
                 receiver_id,
                 enforce_owner_id,
@@ -340,7 +340,7 @@ const init = async () => {
                         'Because of some reason transaction was not applied as expected',
                 };
             } else {
-                const new_token = await token.ViewNFT(token_id, contract);
+                const new_token = await token.ViewMT(token_id, contract);
                 if (!new_token) return api.reject('Token not found');
 
                 new_token.tx = txStatus.transaction.hash;

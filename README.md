@@ -27,10 +27,10 @@ _Click on a route for more information and examples_
 | [`/keypair`](#keypair)                     | GET    | Generates Ed25519 key pair.                                                                                                 |
 | [`/explorer`](#explorer)                   | POST   | Run SELECT query in NEAR explorer database.                                                                                 |
 |                                            |        |                                                                                                                             |
-| **NFT EXAMPLE**                            |        |                                                                                                                             |
-| [`/mint_nft`](#mint_nft)                   | POST   | Mints an NFT for a given contract.                                                                                          |
-| [`/transfer_nft`](#transfer_nft)           | POST   | Transfers NFT ownership to a specified account.                                                                             |
-| [`/view_nft`](#view_nft)                   | POST   | Returns owner, metadata, and approved account IDs for a given token ID.                                                     |
+| **MT EXAMPLE**                            |        |                                                                                                                             |
+| [`/mint_mt`](#mint_mt)                   | POST   | Mints an MT for a given contract.                                                                                          |
+| [`/transfer_mt`](#transfer_mt)           | POST   | Transfers MT ownership to a specified account.                                                                             |
+| [`/view_mt`](#view_mt)                   | POST   | Returns owner, metadata, and approved account IDs for a given token ID.                                                     |
 
 ---
 
@@ -406,9 +406,9 @@ Example:
 
 | Param                            | Description                                                                                                             |
 | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `master_account_id`              | _Master account that has full access to the NFT contract below_                                                         |
+| `master_account_id`              | _Master account that has full access to the MT contract below_                                                         |
 | `seed_phrase` _OR_ `private_key` | _Seed phrase OR private key of the account id above._                                                                   |
-| `nft_contract`                   | _Contract account that has NFT contract deployed to it_                                                                 |
+| `mt_contract`                   | _Contract account that has MT contract deployed to it_                                                                 |
 | `server_host`                    | _Public IP address for your API server (localhost is default)_                                                          |
 | `server_port`                    | _(Port your API server will listen on)_                                                                                 |
 | `rpc_node`                       | _[Network](https://docs.near.org/docs/concepts/networks) your server will be running on (testnet, mainnet, or betanet)_ |
@@ -421,7 +421,7 @@ Example:
 {
   "master_account_id": "example.testnet",
   "seed_phrase": "seed phrase for master_account_id goes here",
-  "nft_contract": "nft-contract.example.testnet",
+  "mt_contract": "mt-contract.example.testnet",
   "server_host": "localhost",
   "server_port": 3000,
   "rpc_node": "https://rpc.testnet.near.org"
@@ -631,25 +631,25 @@ Example:
 
 ---
 
-# NFTs
+# MTs
 
 ---
 
-## `/mint_nft`
+## `/mint_mt`
 
-> _Mints a new NFT on a specified contract._
+> _Mints a new MT on a specified contract._
 
 **Method:** **`POST`**
 
-### Standard NFT Minting
+### Standard MT Minting
 
 | Param                            | Description                                            |
 | -------------------------------- | ------------------------------------------------------ |
 | `token_id`                       | _ID for new token you are minting_                     |
 | `metadata`                       | _Metadata for the new token as a string._              |
 | `account_id`                     | _Account ID for the new token owner._                  |
-| `seed_phrase` _OR_ `private_key` | _Seed phrase OR private key for the NFT contract._     |
-| `nft_contract`                   | _Account ID for the NFT contract your are minting on._ |
+| `seed_phrase` _OR_ `private_key` | _Seed phrase OR private key for the MT contract._     |
+| `mt_contract`                   | _Account ID for the MT contract your are minting on._ |
 
 _**Note:** Use [`near login`](https://docs.near.org/docs/tools/near-cli#near-login) to save your key pair to your local machine._
 
@@ -661,11 +661,11 @@ Example:
     "metadata": "https://ipfs.io/ipfs/Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu",
     "account_id": "example.testnet",
     "private_key": "41oHMLtYygTsgwDzaMdjWRq48Sy9xJsitJGmMxgA9A7nvd65aT8vQwAvRdHi1nruPP47B6pNhW5T5TK8SsqCZmjn",
-    "contract": "nft.example.near",
+    "contract": "mt .example.near",
 }
 ```
 
-### Simple NFT Minting
+### Simple MT Minting
 
 _Requires [`/init`](#init) configuration with master account._
 
@@ -703,7 +703,7 @@ _(`tx` is the transaction hash that can be queried in [NEAR Explorer](http://exp
 
 ---
 
-### Batch NFT minting (simple)
+### Batch MT minting (simple)
 
 _Requires [`/init`](#init) configuration with master account._
 
@@ -745,22 +745,22 @@ _(Above response are transaction hashes that can be queried in [NEAR Explorer](h
 
 ---
 
-## `/transfer_nft`
+## `/transfer_mt`
 
-> _Transfers ownership of NFT from specified contract on behalf of provided `enforce_owner_id` signed with `owner_private_key`._
+> _Transfers ownership of MT from specified contract on behalf of provided `enforce_owner_id` signed with `owner_private_key`._
 
 **Method:** **`POST`**
 
-### Standard Transfer NFT
+### Standard Transfer MT
 
 | Param               | Description                                               |
 | ------------------- | --------------------------------------------------------- |
 | `token_id`          | _Token ID of the token being transferred_                 |
-| `receiver_id`       | _Account ID taking ownership of the NFT_                  |
-| `enforce_owner_id`  | _Account ID for the account that currently owns the NFT._ |
+| `receiver_id`       | _Account ID taking ownership of the MT_                  |
+| `enforce_owner_id`  | _Account ID for the account that currently owns the MT._ |
 | `memo`              | _Optional message to the new token holder._               |
 | `owner_private_key` | _Private key of the `enforce_owner_id`._                  |
-| `nft_contract`      | _NFT contract that the token being transferred is on._    |
+| `mt_contract`      | _MT contract that the token being transferred is on._    |
 
 _**Note:** Use [`near login`](https://docs.near.org/docs/tools/near-cli#near-login) to save your key pair to your local machine._
 
@@ -773,7 +773,7 @@ Example:
   "enforce_owner_id": "example.testnet",
   "memo": "Here's a token I thought you might like! :)",
   "owner_private_key": "YOUR_PRIVATE_KEY",
-  "contract": "nft.example.near"
+  "contract": "mt .example.near"
 }
 ```
 
@@ -792,15 +792,15 @@ _(`tx` is the transaction hash that can be queried in [NEAR Explorer](http://exp
 
 ---
 
-### Simple Transfer NFTs
+### Simple Transfer MTs
 
 > _Requires [`/init`](#init) configuration with master account._
 
 | Param              | Description                                               |
 | ------------------ | --------------------------------------------------------- |
 | `token_id`         | _Token ID of the token being transferred_                 |
-| `receiver_id`      | _Account ID taking ownership of the NFT_                  |
-| `enforce_owner_id` | _Account ID for the account that currently owns the NFT._ |
+| `receiver_id`      | _Account ID taking ownership of the MT_                  |
+| `enforce_owner_id` | _Account ID for the account that currently owns the MT._ |
 | `memo`             | _Optional message to new token holder._                   |
 
 Example:
@@ -829,9 +829,9 @@ _(`tx` is the transaction hash that can be queried in [NEAR Explorer](http://exp
 
 ---
 
-## `view_nft`
+## `view_mt`
 
-### Standard View NFT
+### Standard View MT
 
 > _Returns owner, metadata, and approved account IDs for a given token ID._
 
@@ -842,7 +842,7 @@ Example:
 ```json
 {
   "token_id": "EXAMPLE-TOKEN",
-  "contract": "nft.example.testnet"
+  "contract": "mt.example.testnet"
 }
 ```
 
@@ -858,15 +858,15 @@ Example response:
 
 ---
 
-### Simple View NFT
+### Simple View MT
 
-> _Receive detailed information about NFT using URL params. Requires [`/init`](#init) configuration with master account._
+> _Receive detailed information about MT using URL params. Requires [`/init`](#init) configuration with master account._
 
 **Method:** **`GET`**
 
 Example:
 
-`http://localhost:3000/view_nft/EXAMPLE-TOKEN`
+`http://localhost:3000/view_mt/EXAMPLE-TOKEN`
 
 Example Response:
 
@@ -891,6 +891,6 @@ Example Response:
 - `{image}`
 - `{color}`
 
-## Video Presentation
+## Video Presentation (NFT example)
 
 [![Live App Review 15 - NFT Server Side API](https://img.youtube.com/vi/d71OscmH4cA/0.jpg)](https://youtu.be/d71OscmH4cA)

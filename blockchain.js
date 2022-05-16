@@ -56,12 +56,12 @@ module.exports = {
         }
     },
 
-    Init: async function (master_account_id, master_key, nft_contract, server_host, server_port, rpc_node) {
+    Init: async function (master_account_id, master_key, mt_contract, server_host, server_port, rpc_node) {
         try {
             const new_settings = settings;
             if (master_account_id) new_settings.master_account_id = master_account_id;
             if (master_key) new_settings.master_key = master_key;
-            if (nft_contract) new_settings.nft_contract = nft_contract;
+            if (mt_contract) new_settings.mt_contract = mt_contract;
             if (server_host) new_settings.server_host = server_host;
             if (server_port) new_settings.server_port = server_port;
             if (rpc_node) new_settings.rpc_node = rpc_node;
