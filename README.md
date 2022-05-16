@@ -102,7 +102,7 @@ Example:
 {
   "account_id": "example.testnet",
   "seed_phrase": "witch collapse practice feed shame open despair creek road again ice least",
-  "contract": "nft_simple.wasm"
+  "contract": "multi_token.wasm"
 }
 ```
 
