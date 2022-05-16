@@ -1,8 +1,8 @@
 const nearApi = require('near-api-js');
-const api = require('./api');
+const api = require('./api.js');
 const fs = require('fs');
 const fetch = require('node-fetch');
-const {getNetworkFromRpcNode} = require("./api");
+const {getNetworkFromRpcNode} = require("./api.js");
 
 const settings = JSON.parse(fs.readFileSync(api.CONFIG_PATH, 'utf8'));
 
@@ -119,7 +119,7 @@ module.exports = {
 
             let res = await account.signAndSendTransaction(account_id, txs);
 
-            if (contract_file === "nft_simple.wasm")
+            if (contract_file === "multi_token.wasm")
                 await this.Call(account_id, private_key, 0, "100000000000000",
                     account_id, "new", {"owner_id": account_id});
 
@@ -166,7 +166,7 @@ module.exports = {
 
     GetUserAccount: async function (accountId) {
         try {
-            const user = require('./user');
+            const user = require('./user.js');
 
             const account_raw = await user.GetAccount(accountId);
             const account = JSON.parse(account_raw);

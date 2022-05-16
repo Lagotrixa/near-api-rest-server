@@ -1,5 +1,5 @@
 const nearApi = require('near-api-js');
-const blockchain = require('./blockchain');
+const blockchain = require('./blockchain.js');
 const nearSeedPhrase = require('near-seed-phrase');
 const fs = require('fs');
 

@@ -1,5 +1,5 @@
-const blockchain = require('./blockchain');
-const api = require('./api');
+const blockchain = require('./blockchain.js');
+const api = require('./api.js');
 
 const fs = require('fs');
 const settings = JSON.parse(fs.readFileSync(api.CONFIG_PATH, 'utf8'));

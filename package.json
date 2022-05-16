@@ -1,27 +1,36 @@
 {
   "name": "near-api-server",
   "version": "1.1.0",
-  "description": "",
+  "description": "> Interact with the NEAR blockchain using a simple REST API.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Vadim Ilin",
+  "author": "Lagotrixa",
   "license": "ISC",
   "dependencies": {
     "@hapi/catbox-memory": "^5.0.1",
-    "@hapi/hapi": "^18.1.0",
-    "body-parser": "~1.19.0",
-    "faker": "~5.4.0",
+    "@hapi/hapi": "^20.2.2",
+    "body-parser": "~1.20.0",
+    "faker": "~5.5.3",
     "fs": "*",
-    "near-api-js": "~0.44.1",
-    "near-cli": "^2.2.0",
-    "near-seed-phrase": "^0.1.0",
-    "node-fetch": "^2.6.1",
+    "near-api-js": "~0.44.2",
+    "near-cli": "^3.2.0",
+    "near-seed-phrase": "^0.2.0",
+    "node-fetch": "^2.6.7",
     "path": "^0.12.7",
     "pg": "^8.6.0"
   },
   "bin": {
-    "near-api-server": "./app.js"
-  }
+    "near-api-server": "app.js"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lagotrixa/near-api-rest-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Lagotrixa/near-api-rest-server/issues"
+  },
+  "homepage": "https://github.com/Lagotrixa/near-api-rest-server#readme"
 }

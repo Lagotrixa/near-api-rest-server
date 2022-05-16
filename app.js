@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 'use strict';
-const user = require('./user');
-const token = require('./token');
-const blockchain = require('./blockchain');
-const api = require('./api');
+const user = require('./user.js');
+const token = require('./token.js');
+const blockchain = require('./blockchain.js');
+const api = require('./api.js');
 const faker = require('faker');
 const crypto = require('crypto');
 const CatboxMemory = require('@hapi/catbox-memory');
@@ -380,9 +380,9 @@ const init = async () => {
                 port,
             });
 
-            if (["104.199.89.51", "35.184.214.98"].includes(host)) {
-                return api.reject('Please run explorer function only on your own NEAR REST API SERVER instance, https://github.com/near-examples/near-api-rest-server');
-            }
+            //if (["104.199.89.51", "35.184.214.98"].includes(host)) {
+            //    return api.reject('Please run explorer function only on your own NEAR REST API SERVER instance, https://github.com/near-examples/near-api-rest-server');
+            //}
 
             try {
                 client.connect();
