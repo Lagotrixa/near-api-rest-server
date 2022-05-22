@@ -1,1 +1,5 @@
-{"server_host":"localhost","server_port":3000,"rpc_node":"https://rpc.testnet.near.org","init_disabled":true,"master_account_id":"mt.agutin.testnet","master_key":"ed25519:3qGJHXsEM6vH6rrwheMoW2ydMVhCmvBNNe5cmkM79JRjfgsY7Bgc92QL9BZUPrjAVz2Dab5vDSwdxR5NkCbk2WyC"}
+{"server_host":"localhost",
+"server_port":3000,
+"rpc_node":"https://rpc.testnet.near.org",
+"init_disabled":true
+}

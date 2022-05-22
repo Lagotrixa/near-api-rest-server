@@ -3,3 +3,4 @@ node_modules/
 storage/
 package-lock.json
 near-api-server.config.json
+private.json
