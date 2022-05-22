@@ -12,11 +12,20 @@ module.exports = {
     ViewMT: async function (tokenId, contract) {
         try {
             const mtContract = contract ? contract : settings.mt_contract;
-            return await blockchain.View(
-                mtContract,
-                "mt_tokens",
-                {token_id: tokenId}
-            );
+            if (tokenId){      //Show all tokens
+                return await blockchain.View(
+                    mtContract,
+                    "mt_token",
+                    {"token_ids": [`${tokenId}`]}
+                );
+            }
+            else{                   //Show token by id
+                return await blockchain.View(
+                    mtContract,
+                    "mt_tokens",
+                    {"token_ids": ""}
+                );
+            }
         } catch (e) {
             return api.reject(e);
         }
@@ -25,7 +34,7 @@ module.exports = {
     /**
      * @return {string}
      */
-    MintMT: async function (tokenId, metadata, contractAccountId, account_id, private_key) {
+    MintMT: async function (tokenId, supply, metadata, contractAccountId, account_id, private_key) {
         const mtContract = contractAccountId ? contractAccountId : settings.mt_contract;
 
         let account = !(account_id && private_key)
@@ -36,13 +45,14 @@ module.exports = {
             const tx = await account.functionCall(
                 mtContract,
                 "mt_mint",
-                //TODO fix params
                 {
                     "token_id": tokenId,
-                    "metadata": metadata
+                    "supply": supply,
+                    "token_owner_id": account_id,
+                    "token_metadata": metadata
                 },
                 '100000000000000',
-                '10000000000000000000000');
+                '0');
 
             if (!tx.status.Failure)
                 return tx.transaction.hash
@@ -51,7 +61,7 @@ module.exports = {
         }
     },
 
-    TransferMT: async function (tokenId, receiverId, enforceOwnerId, memo, contractAccountId, owner_private_key) {
+    TransferMT: async function (tokenId, receiverId, amount, enforceOwnerId, memo, contractAccountId, owner_private_key) {
         try {
             const mtContract = contractAccountId ? contractAccountId : settings.mt_contract;
             let account;
@@ -65,11 +75,11 @@ module.exports = {
             return await account.functionCall(
                 mtContract,
                 "mt_transfer",
-                //TODO fix params
                 {
                     "token_id": tokenId,
                     "receiver_id": receiverId,
-                    "enforce_owner_id": enforceOwnerId,
+                    "amount": amount,
+                    "owner_id": enforceOwnerId,
                     "memo": memo
                 },
                 '100000000000000',
@@ -77,5 +87,33 @@ module.exports = {
         } catch (e) {
             return api.reject(e);
         }
-    }
+    },
+
+    /**
+     * @return {string}
+     */
+         RegisterMT: async function (tokenId, contractAccountId, account_id, private_key) {
+            const mtContract = contractAccountId ? contractAccountId : settings.mt_contract;
+    
+            let account = !(account_id && private_key)
+                ? await blockchain.GetMasterAccount()
+                : await blockchain.GetAccountByKey(account_id, private_key);
+    
+            try {
+                const tx = await account.functionCall(
+                    mtContract,
+                    "register",
+                    {
+                        "token_id": tokenId,
+                        "account_id": account_id,
+                    },
+                    '100000000000000',
+                    '0');
+    
+                if (!tx.status.Failure)
+                    return tx.transaction.hash
+            } catch (e) {
+                return api.reject(e);
+            }
+        }
 };

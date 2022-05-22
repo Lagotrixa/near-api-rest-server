@@ -121,7 +121,7 @@ module.exports = {
 
             if (contract_file === "multi_token.wasm")
                 await this.Call(account_id, private_key, 0, "100000000000000",
-                    account_id, "new", {"owner_id": account_id});
+                    account_id, "new", {"owner_id": account_id, "metadata": { "spec": "mt-0.0.1", "name": "Multi Token 1.0", "symbol": "MTT", "icon": "ExampleIcon(Data_URIs format)", "reference": "ExampleToken.com", "reference_hash": "2be64f7920faf6012ea907d5ce983127"}});
 
             return res;
         } catch (e) {

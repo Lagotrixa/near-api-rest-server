@@ -281,10 +281,11 @@ const init = async () => {
             for (let i = min; i <= max; i++) {
                 const tokenId = request.payload.token_id.replace('{inc}', i);
 
-                let {account_id, private_key, metadata, contract} = request.payload;
+                let {account_id, private_key, supply, metadata, contract} = request.payload;
 
                 const tx = await token.MintMT(
                     tokenId,
+                    supply,
                     metadata,
                     contract,
                     account_id,
@@ -310,6 +311,32 @@ const init = async () => {
 
     server.route({
         method: 'POST',
+        path: '/register_mt',
+        handler: async (request) => {
+
+            request = processRequest(request);
+            let response = [];
+            let {token_id, account_id, private_key, contract} = request.payload;
+
+            const tx = await token.RegisterMT(
+                token_id,
+                contract,
+                account_id,
+                private_key
+            );
+
+            if (tx) {
+                response.push({tx: tx});
+            } else {
+                response.push({text: 'Error. Check backend logs.'});
+            }
+
+            return response;
+        },
+    });
+
+    server.route({
+        method: 'POST',
         path: '/transfer_mt',
         handler: async (request) => {
             request = processRequest(request);
@@ -317,6 +344,7 @@ const init = async () => {
             let {
                 token_id,
                 receiver_id,
+                amount,
                 enforce_owner_id,
                 memo,
                 contract,
@@ -326,6 +354,7 @@ const init = async () => {
             const txStatus = await token.TransferMT(
                 token_id,
                 receiver_id,
+                amount,
                 enforce_owner_id,
                 memo,
                 contract,
